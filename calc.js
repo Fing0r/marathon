@@ -1,15 +1,14 @@
-function calc(a, b, op) {
-  return (checkError(a, b, op) ? 'error' : operation(a, b, op))
+function calc(op, a, b) {
+  return (checkError(op, a, b) ? 'Error' : operation(op, a, b))
 }
 
-function checkError(a, b, op) {
+function checkError(op, a, b) {
   const errorCheck = (typeof (a) !== 'number' || typeof (b) !== 'number' || !op)
-  const nanCheck = (a !== a || b !== b)
-
-  return errorCheck || nanCheck
+  
+  return errorCheck
 }
 
-function operation(a, b, op) {
+function operation(op, a, b) {
   switch (op) {
     case 'sum':
       return a + b
@@ -18,14 +17,14 @@ function operation(a, b, op) {
     case 'multi':
       return a * b
     case 'div':
-      return (b === 0 ? 'На ноль делить нельзя' : a / b)
+      return a / b
     case 'exp':
       return a ** b
     case 'rem':
-      return (b === 0 ? 'На ноль делить нельзя' : a % b)
+      return a % b
     default:
       return 'unknown operation'
   }
 }
 
-console.log(calc(123, 13, 'sum'));
+console.log(calc('sum', 12, 13));

@@ -1,5 +1,3 @@
-
-
 const STATUS = {
   DONE: "Done",
   IN_PROGRESS: "In progress",
@@ -26,9 +24,9 @@ const list = [{
 ]
 
 function addTask(task) {
-  if (~isTaskValid(task)) {
-    return console.log(`task "${task}" already exists `);
-  }
+  const errorMessage = `task "${task}" already exists `
+  if (~isTaskValid(task)) return console.log(errorMessage)
+  
 
   list.push({
     name: task,
@@ -37,16 +35,29 @@ function addTask(task) {
   })
 }
 
+function deleteTask(task) {
+  const errorMessage = `there is no such "${task}" task`
+  if (!~isTaskValid(task)) return console.log(errorMessage)
+
+  list.splice(isTaskValid(task), 1)
+}
+
 function changeStatus(task, status) {
-  list.find((elem) => (elem.name === task) && (elem.status = status))
+  const errorMessage = `there is no such "${task}" task`
+  if (!~isTaskValid(task)) return console.log(errorMessage)
+
+  list[isTaskValid(task)].status = status
+}
+
+function changePriority(task, priority) {
+  const errorMessage = `there is no such "${task}" task`
+  if (!~isTaskValid(task)) return console.log(errorMessage)
+
+  list[isTaskValid(task)].priority = priority
 }
 
 function isTaskValid(task) {
   return list.findIndex((item) => item.name === task)
-}
-
-function deleteTask(task) {
-  return (~isTaskValid(task) ? list.splice(isTaskValid(task), 1) : console.log(`there is no such "${task}" task`))
 }
 
 function showBy(sort) {
@@ -66,18 +77,21 @@ function showBy(sort) {
   for (let key in group) {
     result += `${key}:\n${group[key] || " -\n"}\n`
   }
-  console.log(result);
+
+  console.log(result.trim())
 }
 
 
-addTask("3234")
-addTask("32334")
-addTask("323у34")
-//console.log(list);
-//deleteTask("3234");
-//console.log(list) 
+addTask("test 1")
+deleteTask("test 1")
+addTask("test 2")
+deleteTask("tes")
+addTask("test 2")
+changePriority("test 2", "high")
+changePriority("test", "low")
 changeStatus("test", "To do")
-changeStatus("32334", "In progress")
-//console.log(list);
-
+changeStatus("test 2", "In progress")
+console.log('\n');
 showBy("status")
+console.log('\n');
+showBy("priority")
